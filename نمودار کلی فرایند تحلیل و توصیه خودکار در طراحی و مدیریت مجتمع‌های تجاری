@@ -1,0 +1,83 @@
+import matplotlib.pyplot as plt
+from matplotlib.patches import FancyBboxPatch
+
+# Initialize the figure and axes
+fig, ax = plt.subplots(figsize=(26, 18))
+
+# Define the coordinates for the flowchart elements with three levels
+elements = {
+    # Level 1: Ontology and Data Preparation
+    "Ontology Development\n(Traditional & AI-based)": (2, 18),
+    "Industry 6 Principles\n(Main & Sub-Principles)": (8, 18),
+    "Risks & Sub-Risks\n(Cyber, Financial, etc.)": (14, 18),
+    "Architectural Principles\n(Main & Sub-Principles)": (20, 18),
+    # Level 2: Neural Network 1 for Spatial Layout
+    "Input Data:\n12 Elements, Area, Location": (2, 16),
+    "Preprocessing\n(Data Augmentation\n50 Complexes)": (2, 14),
+    "Neural Network 1\n(Spatial Layout)": (2, 12),
+    "Output:\n8 Spatial Layouts\n(Linear, Radial, etc.)": (2, 10),
+    # Level 2: Neural Network 2 for Risk Management
+    "Risk Data Collection": (8, 16),
+    "OLAP Analysis": (8, 14),
+    "PCA\n(96 to 16 Features)": (8, 12),
+    "Neural Network 2\n(Risk Management)": (8, 10),
+    "Output:\nRisk Management\nStrategies": (8, 8),
+    # Level 3: Additional Components
+    "Image Analysis\n(Neural Network)": (14, 14),
+    "Recommendations:\nOptimal Layout": (14, 10),
+    "Recommendations:\nRisk Strategies": (14, 8),
+}
+
+# Draw the elements (boxes) with color differentiation for levels
+for key, (x, y) in elements.items():
+    color = "lightblue" if y > 14 else "lightgreen" if y > 10 else "lightcoral"
+    ax.add_patch(FancyBboxPatch((x - 1, y - 0.5), 2, 1,
+                                 boxstyle="round,pad=0.3", edgecolor="black", facecolor=color))
+    ax.text(x, y, key, ha="center", va="center", fontsize=10)
+
+# Define connections between elements
+connections = [
+    # Ontology Development Connections
+    (("Ontology Development\n(Traditional & AI-based)", "Input Data:\n12 Elements, Area, Location")),
+    (("Ontology Development\n(Traditional & AI-based)", "Industry 6 Principles\n(Main & Sub-Principles)")),
+    (("Ontology Development\n(Traditional & AI-based)", "Risks & Sub-Risks\n(Cyber, Financial, etc.)")),
+    (("Ontology Development\n(Traditional & AI-based)", "Architectural Principles\n(Main & Sub-Principles)")),
+    # Neural Network 1 Connections
+    (("Input Data:\n12 Elements, Area, Location", "Preprocessing\n(Data Augmentation\n50 Complexes)")),
+    (("Preprocessing\n(Data Augmentation\n50 Complexes)", "Neural Network 1\n(Spatial Layout)")),
+    (("Neural Network 1\n(Spatial Layout)", "Output:\n8 Spatial Layouts\n(Linear, Radial, etc.)")),
+    (("Output:\n8 Spatial Layouts\n(Linear, Radial, etc.)", "Recommendations:\nOptimal Layout")),
+    # Neural Network 2 Connections
+    (("Risks & Sub-Risks\n(Cyber, Financial, etc.)", "Risk Data Collection")),
+    (("Architectural Principles\n(Main & Sub-Principles)", "Risk Data Collection")),
+    (("Risk Data Collection", "OLAP Analysis")),
+    (("OLAP Analysis", "PCA\n(96 to 16 Features)")),
+    (("PCA\n(96 to 16 Features)", "Neural Network 2\n(Risk Management)")),
+    (("Neural Network 2\n(Risk Management)", "Output:\nRisk Management\nStrategies")),
+    (("Output:\nRisk Management\nStrategies", "Recommendations:\nRisk Strategies")),
+    # Image Analysis Connections
+    (("Image Analysis\n(Neural Network)", "Recommendations:\nOptimal Layout")),
+    (("Image Analysis\n(Neural Network)", "Recommendations:\nRisk Strategies")),
+]
+
+# Draw arrows between elements
+for start, end in connections:
+    x_start, y_start = elements[start]
+    x_end, y_end = elements[end]
+    ax.annotate("", xy=(x_end, y_end - 0.5), xytext=(x_start, y_start - 0.5),
+                arrowprops=dict(facecolor="black", arrowstyle="->"))
+
+# Adjust limits and turn off axes
+ax.set_xlim(0, 24)
+ax.set_ylim(7, 19)
+ax.axis("off")
+
+# Add title
+plt.title("Three-Level Flowchart: Optimized Design and Risk Management with Detailed Inputs", fontsize=14, pad=20)
+
+# Save the chart as an image file
+file_path = "/mnt/data/three_level_flowchart_with_details.png"
+plt.savefig(file_path, dpi=300, bbox_inches="tight")
+plt.show()
+
+file_path
